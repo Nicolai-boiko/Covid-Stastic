@@ -8,12 +8,13 @@ const routes: Routes = [
   { path: '', redirectTo: `/login`, pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
   { path: 'statistic', component: StatisticPageComponent },
-  { path: 'test',
-  component: GitAuthComponent,
-  resolve: {
-  url: ExtUrlResolverService
+  {
+    path: 'test',
+    component: GitAuthComponent,
+    resolve: {
+      // url: ExtUrlResolverService
+    }
   }
-  
 ];
 
 @NgModule({
