@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ApiEnum } from 'src/app/constants/API';
 
 
 @Component({
@@ -9,13 +10,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginPageComponent implements OnInit {
 
+  public apiEnum = ApiEnum;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-  }
-
-
-  login(): void {
-    this.http.get('https://github.com/login/oauth/authorize').subscribe()
   }
 }
