@@ -1,11 +1,7 @@
-<ng-container 
-  *ngIf="{ 
-    filteredData: filteredData$ | async
-  } as data"
->
+<ng-container *ngIf="{ filteredData: filteredData$ | async } as data">
 
   <div class="wrapper">
-
+    <h2>Welcome to Covid Statistic Page</h2>
     <div *ngIf="data.filteredData && !this.loader" class="stat-wrapper">
 
       <mat-form-field appearance="outline">

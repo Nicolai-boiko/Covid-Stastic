@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { ApiEnum } from 'src/app/constants/API';
 
 interface IFilteredData {
   confirmed: string;
@@ -10,25 +11,24 @@ interface IFilteredData {
   vaccinated: string;
   newCases: string;
 }
+
 @Component({
   selector: 'app-statistic-page',
   templateUrl: './statistic-page.component.html',
   styleUrls: ['./statistic-page.component.scss']
 })
 
-
 export class StatisticPageComponent implements OnInit, OnDestroy {
-
 
   public countriesList$ = new BehaviorSubject(['']);
   public filteredData$ = new BehaviorSubject({} as IFilteredData);
   public fullStat: any = {};
+  public authToken: string = '';
   public vaccinesStat: any = {};
   public loader: boolean = true;
   public toDay: Date = new Date();
   public countries = new FormControl('');
   private destroy$ = new Subject<void>();
-
 
   constructor(
     private http: HttpClient,
@@ -41,14 +41,14 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.http.get('https://covid-api.mmediagroup.fr/v1/cases').pipe(
+    this.http.get(`${ApiEnum.BASE}cases`).pipe(
       takeUntil(this.destroy$),
     ).subscribe(res => {
       this.countriesList$.next(Object.keys(res));
       this.fullStat = res;
     });
 
-    this.http.get('https://covid-api.mmediagroup.fr/v1/vaccines').pipe(
+    this.http.get(`${ApiEnum.BASE}vaccines`).pipe(
       takeUntil(this.destroy$),
     ).subscribe(res => {
       this.vaccinesStat = res;
@@ -56,14 +56,15 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
 
     if (Object.keys(this.fullStat) && Object.keys(this.vaccinesStat)) this.loader = false;
 
-    this.countries.valueChanges.pipe(filter(Boolean)).pipe(
+    this.countries.valueChanges.pipe(
+      filter(Boolean),
       takeUntil(this.destroy$),
     ).subscribe(inputValue => {
       this.loader = true;
 
       let selectedCountryStat: IFilteredData = {} as IFilteredData;
 
-      this.http.get(`https://covid-api.mmediagroup.fr/v1/history?country=${inputValue}&status=confirmed`).pipe(
+      this.http.get(`${ApiEnum.BASE}history?country=${inputValue}&status=confirmed`).pipe(
         takeUntil(this.destroy$),
       ).subscribe((res: any) => {       
 
