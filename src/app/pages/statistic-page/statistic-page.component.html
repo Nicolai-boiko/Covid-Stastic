@@ -1,46 +1,32 @@
-<mat-form-field appearance="fill">
-    <mat-label>Select Country</mat-label>
-    <mat-select [formControl]="countries">
-      <mat-option *ngFor="let country of (countriesList | async)" [value]="country">{{country}}</mat-option>
-    </mat-select>
-</mat-form-field>
+<ng-container 
+  *ngIf="{ 
+    filteredData: filteredData$ | async
+  } as data"
+>
 
+  <div class="wrapper">
 
-<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
-    class="mat-elevation-z8">
+    <div *ngIf="data.filteredData && !this.loader" class="stat-wrapper">
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
-      No.
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
+      <mat-form-field appearance="outline">
+          <mat-label>Select Country</mat-label>
+          <mat-select [formControl]="countries">
+            <mat-option *ngFor="let country of (countriesList$ | async)" [value]="country">{{country}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+      
+      <div *ngIf="this.countries.value">
+          <mat-card>Confirmed: {{data.filteredData.confirmed}}</mat-card>
+          <mat-card>Recovered: {{data.filteredData.recovered}}</mat-card>
+          <mat-card>Deaths: {{data.filteredData.deaths}}</mat-card>
+          <mat-card>Vaccinated: {{data.filteredData.vaccinated || 'no data'}}</mat-card>
+          <mat-card>New cases today: {{data.filteredData.newCases || 'no data'}}</mat-card>
+      </div>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
-      Name
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+    </div>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by weight">
-      Weight
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-  </ng-container>
+    <mat-spinner *ngIf="this.loader" color="accent" class="spinner"></mat-spinner>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by symbol">
-      Symbol
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-  </ng-container>
+  </div>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+</ng-container>

@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { StatisticPageComponent } from './statistic-page.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -15,10 +17,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MatInputModule,
-    MatTableModule,
     MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class StatisticPageModule { }

@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.stat-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 5rem;
+    height: 5rem;
+}
+
+mat-card {
+    width: 13rem;
+    margin: 5px;
+}
