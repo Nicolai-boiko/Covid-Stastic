@@ -1,4 +1,4 @@
-# CovidStastic
+# Covid statistic
 
 Run `npm i`
 
