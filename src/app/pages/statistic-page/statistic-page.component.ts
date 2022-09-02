@@ -1,18 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { ApiEnum } from 'src/app/constants/API';
+import { IFilteredData } from 'src/app/constants/interfaces';
+import { StatisticService } from 'src/app/services/statistic.service';
 
-
-interface IFilteredData {
-  confirmed: string;
-  recovered: string;
-  deaths: string;
-  vaccinated: string;
-  newCases: string;
-  lastUpdateDate: string;
-}
 
 @Component({
   selector: 'app-statistic-page',
@@ -33,7 +24,7 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private http: HttpClient,
+    private statisticService: StatisticService,
   ) { }
 
   ngOnDestroy(): void {
@@ -42,14 +33,14 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.http.get(`${ApiEnum.BASE}cases`).pipe(
+    this.statisticService.getCases().pipe(
       takeUntil(this.destroy$),
     ).subscribe(res => {
       this.countriesList$.next(Object.keys(res));
       this.fullStat = res;
     });
 
-    this.http.get(`${ApiEnum.BASE}vaccines`).pipe(
+    this.statisticService.getVaccines().pipe(
       takeUntil(this.destroy$),
     ).subscribe(res => {
       this.vaccinesStat = res;
@@ -67,7 +58,7 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
 
       let selectedCountryStat: IFilteredData = {} as IFilteredData;
 
-      this.http.get(`${ApiEnum.BASE}history?country=${inputValue}&status=confirmed`).pipe(
+      this.statisticService.getConfirmedCases(inputValue).pipe(
         takeUntil(this.destroy$),
       ).subscribe((res: any) => {
         const lastUpdateDate = Object.keys(res.All.dates).reduce((a, b) => a > b ? a : b);
