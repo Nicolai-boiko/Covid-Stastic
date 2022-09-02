@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, of, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ApiEnum } from 'src/app/constants/API';
@@ -31,9 +31,15 @@ export class AuthComponentComponent implements OnInit, OnDestroy {
       }
     ).pipe(
       takeUntil(this.destroy$),
-    ).subscribe(authToken => {
-      sessionStorage.setItem('authToken', authToken as string);
-      this.router.navigate(['/statistic']);
+    ).subscribe(authToken => {    
+      console.log('authToken', authToken as string);
+      
+        sessionStorage.setItem('authToken', authToken as string);
+        this.router.navigate(['/statistic']);
     });
+  }
+
+  backToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }
