@@ -24,4 +24,8 @@ export class StatisticService {
   getConfirmedCases(inputValue: string): Observable<any> {
     return this.http.get(`${ApiEnum.BASE}history?country=${inputValue}&status=confirmed`);
   }
+
+  getAuthToken(code: string): Observable<any> {
+    return this.http.post(ApiEnum.SERVER, { code });
+  }
 }
