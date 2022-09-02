@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthComponentComponent } from './auth-component.component';
+import { ErrorPageComponent } from './error-page.component';
 import { MatButtonModule } from '@angular/material/button';
 
 
 
 @NgModule({
-  declarations: [AuthComponentComponent],
+  declarations: [
+    ErrorPageComponent
+  ],
   imports: [
     CommonModule,
     MatButtonModule,
   ]
 })
-export class AuthComponentModule { }
+export class ErrorPageModule { }

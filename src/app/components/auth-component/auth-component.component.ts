@@ -25,19 +25,19 @@ export class AuthComponentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.http.post(ApiEnum.SERVER,
-      {
-        code: this.route.snapshot.queryParams['code'],
-      }
-    ).pipe(
-      takeUntil(this.destroy$),
-    ).subscribe(authToken => {
-      sessionStorage.setItem('authToken', authToken as string);
-      this.router.navigate(['/statistic']);
-    });
-  }
-
-  backToLogin(): void {
-    this.router.navigate(['/login']);
+    if (this.route.snapshot.queryParams['error']) {
+      this.router.navigate(['/error']);
+    } else if (this.route.snapshot.queryParams['code']) {
+      this.http.post(ApiEnum.SERVER,
+        {
+          code: this.route.snapshot.queryParams['code'],
+        }
+      ).pipe(
+        takeUntil(this.destroy$),
+      ).subscribe(authToken => {
+        sessionStorage.setItem('authToken', authToken as string);
+        this.router.navigate(['/statistic']);
+      });
+    }
   }
 }
