@@ -35,15 +35,15 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.statisticService.getCases().pipe(
       takeUntil(this.destroy$),
-    ).subscribe(res => {
-      this.countriesList$.next(Object.keys(res));
-      this.fullStat = res;
+    ).subscribe(statistic => {
+      this.countriesList$.next(Object.keys(statistic));
+      this.fullStat = statistic;
     });
 
     this.statisticService.getVaccines().pipe(
       takeUntil(this.destroy$),
-    ).subscribe(res => {
-      this.vaccinesStat = res;
+    ).subscribe(vaccinated => {
+      this.vaccinesStat = vaccinated;
     });
 
     if (Object.keys(this.fullStat) && Object.keys(this.vaccinesStat)) {
@@ -60,27 +60,29 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
 
       this.statisticService.getConfirmedCases(inputValue).pipe(
         takeUntil(this.destroy$),
-      ).subscribe((res: any) => {
-        const lastUpdateDate = Object.keys(res.All.dates).reduce((a, b) => a > b ? a : b);
-        selectedCountryStat.newCases = res.All.dates[lastUpdateDate];
+      ).subscribe((confirmedCases: any) => {
+        const lastUpdateDate = Object.keys(confirmedCases.All.dates).reduce((a, b) => a > b ? a : b);
+        selectedCountryStat.newCases = confirmedCases.All.dates[lastUpdateDate];
         selectedCountryStat.lastUpdateDate = lastUpdateDate;
         this.loader = false;
       });
 
-      for (let k in this.fullStat) {
-        if (k === inputValue) {
-          selectedCountryStat.confirmed = this.fullStat[k].All.confirmed;
-          selectedCountryStat.recovered = this.fullStat[k].All.recovered;
-          selectedCountryStat.deaths = this.fullStat[k].All.deaths;
+      for (let country in this.fullStat) {
+        if (country === inputValue) {
+          selectedCountryStat.confirmed = this.fullStat[country].All.confirmed;
+          selectedCountryStat.recovered = this.fullStat[country].All.recovered;
+          selectedCountryStat.deaths = this.fullStat[country].All.deaths;
         }
       }
-      for (let x in this.vaccinesStat) {
-        if (x === inputValue) {
-          selectedCountryStat.vaccinated = this.vaccinesStat[x].All.people_vaccinated && this.vaccinesStat[x].All.population ?
-            `${Math.round(this.vaccinesStat[x].All.people_vaccinated / this.vaccinesStat[x].All.population * 100)}%` :
+
+      for (let country in this.vaccinesStat) {
+        if (country === inputValue) {
+          selectedCountryStat.vaccinated = this.vaccinesStat[country].All.people_vaccinated && this.vaccinesStat[country].All.population ?
+            `${Math.round(this.vaccinesStat[country].All.people_vaccinated / this.vaccinesStat[country].All.population * 100)}%` :
             '';
         }
       }
+
       this.filteredData$.next(selectedCountryStat);
     });
   }
