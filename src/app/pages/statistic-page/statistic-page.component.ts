@@ -4,12 +4,14 @@ import { BehaviorSubject, Subject, filter, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ApiEnum } from 'src/app/constants/API';
 
+
 interface IFilteredData {
   confirmed: string;
   recovered: string;
   deaths: string;
   vaccinated: string;
   newCases: string;
+  lastUpdateDate: string;
 }
 
 @Component({
@@ -40,7 +42,6 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.http.get(`${ApiEnum.BASE}cases`).pipe(
       takeUntil(this.destroy$),
     ).subscribe(res => {
@@ -54,7 +55,9 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
       this.vaccinesStat = res;
     });
 
-    if (Object.keys(this.fullStat) && Object.keys(this.vaccinesStat)) this.loader = false;
+    if (Object.keys(this.fullStat) && Object.keys(this.vaccinesStat)) {
+      this.loader = false;
+    };
 
     this.countries.valueChanges.pipe(
       filter(Boolean),
@@ -66,9 +69,10 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
 
       this.http.get(`${ApiEnum.BASE}history?country=${inputValue}&status=confirmed`).pipe(
         takeUntil(this.destroy$),
-      ).subscribe((res: any) => {       
-
-        selectedCountryStat.newCases = res.All.dates[Object.keys(res.All.dates).reduce((a, b) => a > b ? a : b)];
+      ).subscribe((res: any) => {
+        const lastUpdateDate = Object.keys(res.All.dates).reduce((a, b) => a > b ? a : b);
+        selectedCountryStat.newCases = res.All.dates[lastUpdateDate];
+        selectedCountryStat.lastUpdateDate = lastUpdateDate;
         this.loader = false;
       });
 
@@ -81,9 +85,9 @@ export class StatisticPageComponent implements OnInit, OnDestroy {
       }
       for (let x in this.vaccinesStat) {
         if (x === inputValue) {
-          selectedCountryStat.vaccinated = this.vaccinesStat[x].All.people_vaccinated && this.vaccinesStat[x].All.population ? 
-          `${Math.round(this.vaccinesStat[x].All.people_vaccinated / this.vaccinesStat[x].All.population * 100)}%` :
-          '';
+          selectedCountryStat.vaccinated = this.vaccinesStat[x].All.people_vaccinated && this.vaccinesStat[x].All.population ?
+            `${Math.round(this.vaccinesStat[x].All.people_vaccinated / this.vaccinesStat[x].All.population * 100)}%` :
+            '';
         }
       }
       this.filteredData$.next(selectedCountryStat);

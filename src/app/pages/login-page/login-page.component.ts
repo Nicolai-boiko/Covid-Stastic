@@ -8,5 +8,9 @@ import { ApiEnum } from 'src/app/constants/API';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent {
-  public apiEnum = ApiEnum;
+
+  login(): void {
+    window.location.href = `${ApiEnum.AUTHORIZE}${ApiEnum.CLIENT_ID}`;
+  }
+  
 }

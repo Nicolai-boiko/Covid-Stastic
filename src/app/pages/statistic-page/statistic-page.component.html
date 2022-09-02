@@ -1,5 +1,6 @@
 <ng-container *ngIf="{ filteredData: filteredData$ | async } as data">
 
+  <div class="background">
   <div class="wrapper">
     <h2>Welcome to Covid Statistic Page</h2>
     <div *ngIf="data.filteredData && !this.loader" class="stat-wrapper">
@@ -17,6 +18,7 @@
           <mat-card>Deaths: {{data.filteredData.deaths}}</mat-card>
           <mat-card>Vaccinated: {{data.filteredData.vaccinated || 'no data'}}</mat-card>
           <mat-card>New cases today: {{data.filteredData.newCases || 'no data'}}</mat-card>
+          <mat-card>Last update: {{data.filteredData.lastUpdateDate | date}}</mat-card>
       </div>
 
     </div>
@@ -24,5 +26,6 @@
     <mat-spinner *ngIf="this.loader" color="accent" class="spinner"></mat-spinner>
 
   </div>
+</div>
 
 </ng-container>

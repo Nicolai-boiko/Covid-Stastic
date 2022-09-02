@@ -1,0 +1,17 @@
+.login-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: center / cover no-repeat url(../../../assets/img/bg1.jpg);
+}
+
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+    background: center / contain no-repeat url(../../../assets/img/GitHub.png);
+    background-color: white;
+    border: 5px solid rgb(197, 197, 197);
+    width: 150px;
+    height: 150px;
+}

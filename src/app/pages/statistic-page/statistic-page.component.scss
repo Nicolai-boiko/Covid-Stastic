@@ -1,10 +1,24 @@
-.wrapper {
+.background {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
+    background: center / cover no-repeat url(../../../assets/img/bg3.jpg);
+}
+
+.wrapper {
+    width: 300px;
+    height: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid rgb(236, 236, 236);
+    border-radius: 4px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
 }
 
 .stat-wrapper {
