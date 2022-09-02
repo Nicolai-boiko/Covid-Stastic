@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'statistic', component: StatisticPageComponent, canActivate: [AuthGuard] },
   { path: 'users/auth', component: AuthComponentComponent },
   { path: 'error', component: ErrorPageComponent },
+  { path: '**', component: ErrorPageComponent },
 ];
 
 @NgModule({
